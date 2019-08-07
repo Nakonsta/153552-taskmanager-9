@@ -1,3 +1,4 @@
+'use strict';
 (function() {// Возвращаю верстку для каждого из компонентов
     const returnMenu = () => {
         return `<section class="control__btn-wrap">

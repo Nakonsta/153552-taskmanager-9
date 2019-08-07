@@ -1,21 +1,22 @@
+'use strict';
 (function(){
   
   // Функция вставки компонентов в контейнеры
-  function renderComponent(container, component) {
+  function renderComponent (container, component) {
     container.innerHTML += component();
   }
 
   // Создание переменных с контейнерами
     
-  const menuContainer = document.querySelector('.main__control');
-  const mainContainer = document.querySelector('.main');
-  const tasksContainer = document.createElement('div');
-  tasksContainer.classList.add('board', 'container');
-  const tasksContainerInner = document.createElement('div');
-  tasksContainerInner.classList.add('board__tasks');
+  const menuContainer = document.querySelector(`.main__control`);
+  const mainContainer = document.querySelector(`.main`);
+  const tasksContainer = document.createElement(`div`);
+  tasksContainer.classList.add(`board`, `container`);
+  const tasksContainerInner = document.createElement(`div`);
+  tasksContainerInner.classList.add(`board__tasks`);
   tasksContainer.appendChild(tasksContainerInner);
 
-  //Отрисовка блоков
+  // Отрисовка блоков
 
   renderComponent(menuContainer, templates.menu);
   renderComponent(mainContainer, templates.search);
