@@ -1,7 +1,8 @@
 'use strict';
-(function() {// Возвращаю верстку для каждого из компонентов
-    const returnMenu = () => {
-        return `<section class="control__btn-wrap">
+(function () {
+  // Возвращаю верстку для каждого из компонентов
+  const returnMenu = () => {
+    return `<section class="control__btn-wrap">
         <input
         type="radio"
         name="control"
@@ -29,9 +30,9 @@
         >STATISTICS</label
         >
     </section>`;
-    }
-    const returnSearch = () => {
-        return `<section class="main__search search container">
+  };
+  const returnSearch = () => {
+    return `<section class="main__search search container">
             <input
             type="text"
             id="search__input"
@@ -40,9 +41,9 @@
             />
             <label class="visually-hidden" for="search__input">Search</label>
         </section>`;
-    }
-    const returnFilters = () => {
-        return `<section class="main__filter filter container">
+  };
+  const returnFilters = () => {
+    return `<section class="main__filter filter container">
             <input
             type="radio"
             id="filter__all"
@@ -110,9 +111,9 @@
             >Archive <span class="filter__archive-count">115</span></label
             >
         </section>`;
-    }
-    const returnTaskCard = () => {
-        return `<article class="card card--black">
+  };
+  const returnTaskCard = () => {
+    return `<article class="card card--black">
             <div class="card__form">
             <div class="card__inner">
                 <div class="card__control">
@@ -177,9 +178,9 @@
             </div>
             </div>
         </article>`;
-    }
-    const returnTaskEdit = () => {
-        return `<article class="card card--edit card--yellow card--repeat">
+  };
+  const returnTaskEdit = () => {
+    return `<article class="card card--edit card--yellow card--repeat">
             <form class="card__form" method="get">
             <div class="card__inner">
                 <div class="card__control">
@@ -446,16 +447,16 @@
             </div>
             </form>
         </article>`;
-    }
-    const returnLoadBtn = () => {
-        return `<button class="load-more" type="button">load more</button>`;
-    }
-    window.templates = {
-        menu: returnMenu,
-        search: returnSearch,
-        filters: returnFilters,
-        taskEdit: returnTaskEdit,
-        taskCard: returnTaskCard,
-        loadBtn: returnLoadBtn
-    }
+  };
+  const returnLoadBtn = () => {
+    return `<button class="load-more" type="button">load more</button>`;
+  };
+  window.templates = {
+    menu: returnMenu,
+    search: returnSearch,
+    filters: returnFilters,
+    taskEdit: returnTaskEdit,
+    taskCard: returnTaskCard,
+    loadBtn: returnLoadBtn
+  };
 })();
