@@ -13,10 +13,11 @@ const chooseTags = () => {
 };
 
 let filterOverdue = (task) => task.dueDate < Date.now();
-let filterToday = (task) => task.dueDate == Date.now();
+let filterToday = (task) => new Date(task.dueDate).toDateString() === new Date().toDateString();
 let filterFavorites = (task) => task.isFavorite === true;
+let filterRepeating = (task) => (Object.keys(task.repeatingDays).some((day) => task.repeatingDays[day])) == true;
 let filterTags = (task) => task.tags.size > 0;
-let filterArchive = (task) => task.isArchive == true;
+let filterArchive = (task) => task.isArchive === true;
 
 let countMatch = (filter, tasks) => {
   if (filter === `All`) {
@@ -30,6 +31,9 @@ let countMatch = (filter, tasks) => {
   }
   if (filter === `Favorites`) {
     return tasks.filter(filterFavorites).length;
+  }
+  if (filter === `Repeating`) {
+    return tasks.filter(filterRepeating).length;
   }
   if (filter === `Tags`) {
     return tasks.filter(filterTags).length;
@@ -67,37 +71,39 @@ const getTask = () => ({
   isArchive: Boolean(Math.round(Math.random())),
 });
 
-const getFilters = (tasks) => ([
+const tasks = new Array(7).fill(``).map(getTask);
+
+const getFilters = () => ([
   {
     title: `All`,
-    count: 12,
+    count: countMatch(`All`, tasks),
   },
   {
     title: `Overdue`,
-    count: 0,
+    count: countMatch(`Overdue`, tasks),
   },
   {
     title: `Today`,
-    count: 0,
+    count: countMatch(`Today`, tasks),
   },
   {
     title: `Favorites`,
-    count: 1,
+    count: countMatch(`Favorites`, tasks),
   },
   {
     title: `Repeating`,
-    count: 1,
+    count: countMatch(`Repeating`, tasks),
   },
   {
     title: `Tags`,
-    count: 1,
+    count: countMatch(`Tags`, tasks),
   },
   {
     title: `Archive`,
-    count: 115,
+    count: countMatch(`Archive`, tasks),
   }
 ]);
 
-export {getTask, getFilters};
+export {getTask, getFilters, tasks};
 
 

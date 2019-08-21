@@ -4,7 +4,7 @@ import {getFiltersTemplate} from '../src/components/filters.js';
 import {getTaskCardTemplate} from '../src/components/taskCard.js';
 import {getTaskEditTemplate} from '../src/components/taskEdit.js';
 import {getLoadBtnTemplate} from '../src/components/loadBtn.js';
-import {getTask, getFilters} from '../src/data.js';
+import {getTask, getFilters, tasks} from '../src/data.js';
 
 
 const templates = {
@@ -23,16 +23,10 @@ const renderComponent = (container, component) => {
 
 // Функция вставки карточек
 
-const renderTasks = (container, count) => {
-  const arr = new Array(count)
-  .fill(``)
-  .map(getTask);
-
-  container.insertAdjacentHTML(`beforeend`, arr
+const renderTasks = (container) => {
+  container.insertAdjacentHTML(`beforeend`, tasks
     .map(getTaskCardTemplate)
     .join(``));
-
-  return arr;
 };
 
 const renderFilters = (container) => {
@@ -73,7 +67,7 @@ renderComponent(menuContainer, templates.menu());
 renderComponent(mainContainer, templates.search());
 renderFilters(mainContainer);
 renderComponent(tasksContainerInner, templates.taskEdit());
-const tasks = renderTasks(tasksContainerInner, TASK_COUNT);
+renderTasks(tasksContainerInner, TASK_COUNT);
 mainContainer.appendChild(tasksContainer);
 renderComponent(tasksContainer, templates.loadBtn());
 
