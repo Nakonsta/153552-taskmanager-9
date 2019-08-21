@@ -1,3 +1,44 @@
+const chooseTags = () => {
+  let allHashtags = [`homework`, `theory`, `practice`, `intensive`, `keks`, `lecture`, `chat`];
+  let resultHashtags = new Set();
+  for (let h of allHashtags) {
+    if (Math.random() > 0.5) {
+      resultHashtags.add(h);
+    }
+    if (resultHashtags.size === 3) {
+      break;
+    }
+  }
+  return resultHashtags;
+};
+
+let filterOverdue = (task) => task.dueDate < Date.now();
+let filterToday = (task) => task.dueDate == Date.now();
+let filterFavorites = (task) => task.isFavorite === true;
+let filterTags = (task) => task.tags.size > 0;
+let filterArchive = (task) => task.isArchive == true;
+
+let countMatch = (filter, tasks) => {
+  if (filter === `All`) {
+    return tasks.length;
+  }
+  if (filter === `Overdue`) {
+    return tasks.filter(filterOverdue).length;
+  }
+  if (filter === `Today`) {
+    return tasks.filter(filterToday).length;
+  }
+  if (filter === `Favorites`) {
+    return tasks.filter(filterFavorites).length;
+  }
+  if (filter === `Tags`) {
+    return tasks.filter(filterTags).length;
+  }
+  if (filter === `Archive`) {
+    return tasks.filter(filterArchive).length;
+  }
+};
+
 const getTask = () => ({
   description: [
     `Изучить теорию`,
@@ -14,13 +55,7 @@ const getTask = () => ({
     'sa': false,
     'su': false,
   },
-  tags: new Set([
-    `homework`,
-    `theory`,
-    `practice`,
-    `intensive`,
-    `keks`,
-  ]),
+  tags: chooseTags(),
   color: [
     `black`,
     `yellow`,
@@ -32,7 +67,7 @@ const getTask = () => ({
   isArchive: Boolean(Math.round(Math.random())),
 });
 
-const getFilters = () => ([
+const getFilters = (tasks) => ([
   {
     title: `All`,
     count: 12,
@@ -63,6 +98,6 @@ const getFilters = () => ([
   }
 ]);
 
-export {getTask};
-export {getFilters};
+export {getTask, getFilters};
+
 

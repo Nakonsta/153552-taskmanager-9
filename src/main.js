@@ -18,17 +18,21 @@ const templates = {
 
 // Функция вставки компонентов в контейнеры
 const renderComponent = (container, component) => {
-  container.innerHTML += component();
+  container.innerHTML += component;
 };
 
 // Функция вставки карточек
 
 const renderTasks = (container, count) => {
-  container.insertAdjacentHTML(`beforeend`, new Array(count)
-    .fill(``)
-    .map(getTask)
+  const arr = new Array(count)
+  .fill(``)
+  .map(getTask);
+
+  container.insertAdjacentHTML(`beforeend`, arr
     .map(getTaskCardTemplate)
     .join(``));
+
+  return arr;
 };
 
 const renderFilters = (container) => {
@@ -41,7 +45,7 @@ const renderFilters = (container) => {
 
 const loadMoreTasks = () => {
   let container = document.querySelector(`.board__tasks`);
-  let allTasks = document.querySelectorAll(`.card`);  
+  let allTasks = document.querySelectorAll(`.card`);
   container.innerHTML += new Array(8)
   .fill(``)
   .map(getTask)
@@ -65,24 +69,13 @@ tasksContainer.appendChild(tasksContainerInner);
 
 // Отрисовка блоков
 
-renderComponent(menuContainer, templates.menu);
-renderComponent(mainContainer, templates.search);
+renderComponent(menuContainer, templates.menu());
+renderComponent(mainContainer, templates.search());
 renderFilters(mainContainer);
-renderComponent(tasksContainerInner, templates.taskEdit);
-renderTasks(tasksContainerInner, TASK_COUNT);
+renderComponent(tasksContainerInner, templates.taskEdit());
+const tasks = renderTasks(tasksContainerInner, TASK_COUNT);
 mainContainer.appendChild(tasksContainer);
-renderComponent(tasksContainer, templates.loadBtn);
-
-// Обрезка массива тегов до трех элементов
-// Не разобралась, как вставить ее в темплейт
-
-// const chooseTags = (array) => {
-//   let shortArray = [];
-//   shortArray.push(array[0]);
-//   shortArray.push(array[1]);
-//   shortArray.push(array[2]);
-//   return shortArray;
-// };
+renderComponent(tasksContainer, templates.loadBtn());
 
 // Подрузка новых карточек
 
