@@ -1,4 +1,4 @@
-const returnMenu = () => {
+const getMenuTemplate = () => {
   return `<section class="control__btn-wrap">
         <input
         type="radio"
@@ -28,4 +28,4 @@ const returnMenu = () => {
         >
     </section>`;
 };
-export {returnMenu};
+export {getMenuTemplate};

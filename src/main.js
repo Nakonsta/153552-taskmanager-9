@@ -1,27 +1,58 @@
-import {returnMenu} from '../src/components/menu.js';
-import {returnSearch} from '../src/components/search.js';
-import {returnFilters} from '../src/components/filters.js';
-import {returnTaskCard} from '../src/components/taskCard.js';
-import {returnTaskEdit} from '../src/components/taskEdit.js';
-import {returnLoadBtn} from '../src/components/loadBtn.js';
+import {getMenuTemplate} from '../src/components/menu.js';
+import {getSearchTemplate} from '../src/components/search.js';
+import {getFiltersTemplate} from '../src/components/filters.js';
+import {getTaskCardTemplate} from '../src/components/taskCard.js';
+import {getTaskEditTemplate} from '../src/components/taskEdit.js';
+import {getLoadBtnTemplate} from '../src/components/loadBtn.js';
+import {getTask, getFilters, tasks} from '../src/data.js';
 
 
 const templates = {
-  menu: returnMenu,
-  search: returnSearch,
-  filters: returnFilters,
-  taskEdit: returnTaskEdit,
-  taskCard: returnTaskCard,
-  loadBtn: returnLoadBtn
+  menu: getMenuTemplate,
+  search: getSearchTemplate,
+  filters: getFiltersTemplate,
+  taskEdit: getTaskEditTemplate,
+  taskCard: getTaskCardTemplate,
+  loadBtn: getLoadBtnTemplate
 };
 
 // Функция вставки компонентов в контейнеры
 const renderComponent = (container, component) => {
-  container.innerHTML += component();
+  container.innerHTML += component;
+};
+
+// Функция вставки карточек
+
+const renderTasks = (container) => {
+  container.insertAdjacentHTML(`beforeend`, tasks
+    .map(getTaskCardTemplate)
+    .join(``));
+};
+
+const renderFilters = (container) => {
+  container.insertAdjacentHTML(`beforeend`, new Array(1)
+    .fill(``)
+    .map(getFilters)
+    .map(getFiltersTemplate)
+    .join(``));
+};
+
+const loadMoreTasks = () => {
+  let container = document.querySelector(`.board__tasks`);
+  let allTasks = document.querySelectorAll(`.card`);
+  container.innerHTML += new Array(8)
+  .fill(``)
+  .map(getTask)
+  .map(getTaskCardTemplate)
+  .join(``);
+  if (allTasks.length > 30) { // 30 карточек как случайное значение, после которого кнопка "Загрузить еще скрывается"
+    loadBtn.classList.add(`visually-hidden`);
+  }
 };
 
 // Создание переменных с контейнерами
 
+const TASK_COUNT = 7;
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
 const tasksContainer = document.createElement(`div`);
@@ -32,12 +63,16 @@ tasksContainer.appendChild(tasksContainerInner);
 
 // Отрисовка блоков
 
-renderComponent(menuContainer, templates.menu);
-renderComponent(mainContainer, templates.search);
-renderComponent(mainContainer, templates.filters);
-renderComponent(tasksContainerInner, templates.taskEdit);
-for (let i = 0; i < 3; i++) {
-  renderComponent(tasksContainerInner, templates.taskCard);
-}
+renderComponent(menuContainer, templates.menu());
+renderComponent(mainContainer, templates.search());
+renderFilters(mainContainer);
+renderComponent(tasksContainerInner, templates.taskEdit());
+renderTasks(tasksContainerInner, TASK_COUNT);
 mainContainer.appendChild(tasksContainer);
-renderComponent(tasksContainer, templates.loadBtn);
+renderComponent(tasksContainer, templates.loadBtn());
+
+// Подрузка новых карточек
+
+const loadBtn = document.querySelector(`.load-more`);
+loadBtn.addEventListener(`click`, loadMoreTasks);
+
