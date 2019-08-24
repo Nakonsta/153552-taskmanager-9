@@ -1,3 +1,16 @@
+class TaskEdit {
+  constructor({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) {
+    this._description = description;
+    this._dueDate = new Date(dueDate);
+    this._tags = tags;
+    this._color = color;
+    this._element = null;
+    this._repeatingDays = repeatingDays;
+    this._isFavorite = isFavorite;
+    this._isArchive = isArchive;
+  }
+}
+
 const getTaskEditTemplate = () => {
   return `<article class="card card--edit card--yellow card--repeat">
             <form class="card__form" method="get">
