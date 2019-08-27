@@ -4,7 +4,7 @@ import {getFiltersTemplate} from '../src/components/filters.js';
 import {Task} from '../src/components/taskCard.js';
 import {TaskEdit} from '../src/components/taskEdit.js';
 import {getLoadBtnTemplate} from '../src/components/loadBtn.js';
-import {getTask, getFilters, tasks} from './data.js';
+import {getTask, getFilters} from './data.js';
 import {render, Positions} from './utils.js';
 
 const templates = {
