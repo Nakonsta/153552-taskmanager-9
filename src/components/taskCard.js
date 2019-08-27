@@ -1,3 +1,5 @@
+import {createElement} from '../utils.js';
+
 class Task {
   constructor({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) {
     this._description = description;
@@ -14,6 +16,7 @@ class Task {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }
+
     return this._element;
   }
 
