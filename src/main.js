@@ -21,39 +21,6 @@ const renderComponent = (container, component) => {
 
 // Функция отрисовки карточек
 
-const renderTask = (tasksMock) => {
-  const task = new Task(tasksMock);
-  const taskEdit = new TaskEdit(tasksMock);
-
-  const onEscKeyDown = (evt) => {
-    if (evt.key === `Escape` || evt.key === `Esc`) {
-      tasksContainerInner.replaceChild(task.getElement(), taskEdit.getElement());
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  task.getElement().addEventListener(`click`, () => console.log(te22st));
-
-  task.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
-    tasksContainerInner.replaceChild(taskEdit.getElement(), task.getElement());
-    document.addEventListener(`keydown`, onEscKeyDown);
-  });
-
-  taskEdit.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  });
-
-  taskEdit.getElement().querySelector(`textarea`).addEventListener(`blur`, () => {
-    document.addEventListener(`keydown`, onEscKeyDown);
-  });
-
-  taskEdit.getElement().querySelector(`.card__save`).addEventListener(`click`, () => {
-    tasksContainerInner.replaceChild(task.getElement(), taskEdit.getElement());
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  });
-
-  render(tasksContainerInner, task.getElement(), Positions.BEFOREEND);
-};
 
 const renderFilters = (container) => {
   container.insertAdjacentHTML(`beforeend`, new Array(1)
@@ -82,6 +49,38 @@ const TASK_COUNT = 8;
 
 const tasksMock = new Array(TASK_COUNT).fill(``).map(getTask);
 
+const renderTask = (tasksMocks) => {
+  const task = new Task(tasksMocks);
+  const taskEdit = new TaskEdit(tasksMocks);
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      tasksBoard.replaceChild(task.getElement(), taskEdit.getElement());
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  task.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+    tasksBoard.replaceChild(taskEdit.getElement(), task.getElement());
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+
+  taskEdit.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  });
+
+  taskEdit.getElement().querySelector(`textarea`).addEventListener(`blur`, () => {
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+
+  taskEdit.getElement().querySelector(`.card__save`).addEventListener(`click`, () => {
+    tasksBoard.replaceChild(task.getElement(), taskEdit.getElement());
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  });
+
+  render(tasksBoard, task.getElement(), Positions.BEFOREEND);
+};
+
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
 const tasksContainer = document.createElement(`div`);
@@ -95,15 +94,15 @@ tasksContainer.appendChild(tasksContainerInner);
 renderComponent(menuContainer, templates.menu());
 renderComponent(mainContainer, templates.search());
 renderFilters(mainContainer);
-tasksMock.forEach((taskMock) => renderTask(taskMock));
 mainContainer.appendChild(tasksContainer);
 renderComponent(tasksContainer, templates.loadBtn());
+const tasksBoard = document.querySelector(`.board__tasks`);
+tasksMock.forEach((taskMock) => renderTask(taskMock));
+
 
 // Подрузка новых карточек
 
 // const loadBtn = document.querySelector(`.load-more`);
 // loadBtn.addEventListener(`click`, loadMoreTasks);
-
-// document.addEventListener(`keydown`, onEscKeyDown);
 
 
