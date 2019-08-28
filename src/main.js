@@ -1,53 +1,22 @@
-import {getMenuTemplate} from '../src/components/menu.js';
-import {getSearchTemplate} from '../src/components/search.js';
-import {getFiltersTemplate} from '../src/components/filters.js';
+import {Menu} from '../src/components/menu.js';
+import {Search} from '../src/components/search.js';
+import {Filter} from '../src/components/filters.js';
 import {Task} from '../src/components/taskCard.js';
 import {TaskEdit} from '../src/components/taskEdit.js';
-import {getLoadBtnTemplate} from '../src/components/loadBtn.js';
+import {LoadBtn} from '../src/components/loadBtn.js';
+import {NoTasks} from '../src/components/noTasks.js';
 import {getTask, getFilters} from './data.js';
 import {render, Positions} from './utils.js';
-
-const templates = {
-  menu: getMenuTemplate,
-  search: getSearchTemplate,
-  filters: getFiltersTemplate,
-  loadBtn: getLoadBtnTemplate
-};
 
 // Функция вставки компонентов в контейнеры
 const renderComponent = (container, component) => {
   container.innerHTML += component;
 };
 
-// Функция отрисовки карточек
-
-
-const renderFilters = (container) => {
-  container.insertAdjacentHTML(`beforeend`, new Array(1)
-    .fill(``)
-    .map(getFilters)
-    .map(getFiltersTemplate)
-    .join(``));
+const renderFilter = (filtersArrayParam) => {
+  const filter = new Filter(filtersArrayParam);
+  render(mainContainer, filter.getElement(), Positions.BEFOREEND);
 };
-
-// const loadMoreTasks = () => {
-//   let container = document.querySelector(`.board__tasks`);
-//   let allTasks = document.querySelectorAll(`.card`);
-//   container.innerHTML += new Array(8)
-//   .fill(``)
-//   .map(getTask)
-//   .map(getTaskCardTemplate)
-//   .join(``);
-//   if (allTasks.length > 30) { // 30 карточек как случайное значение, после которого кнопка "Загрузить еще скрывается"
-//     loadBtn.classList.add(`visually-hidden`);
-//   }
-// };
-
-// Создание переменных с контейнерами
-
-const TASK_COUNT = 8;
-
-const tasksMock = new Array(TASK_COUNT).fill(``).map(getTask);
 
 const renderTask = (tasksMocks) => {
   const task = new Task(tasksMocks);
@@ -81,6 +50,30 @@ const renderTask = (tasksMocks) => {
   render(tasksBoard, task.getElement(), Positions.BEFOREEND);
 };
 
+// const loadMoreTasks = () => {
+//   let container = document.querySelector(`.board__tasks`);
+//   let allTasks = document.querySelectorAll(`.card`);
+//   container.innerHTML += new Array(8)
+//   .fill(``)
+//   .map(getTask)
+//   .map(getTaskCardTemplate)
+//   .join(``);
+//   if (allTasks.length > 30) { // 30 карточек как случайное значение, после которого кнопка "Загрузить еще скрывается"
+//     loadBtn.classList.add(`visually-hidden`);
+//   }
+// };
+
+const TASK_COUNT = 8;
+
+const tasksMock = new Array(TASK_COUNT).fill(``).map(getTask);
+const filtersArray = new Array(1).fill(``).map(getFilters);
+const menu = new Menu().getTemplate();
+const loadBtn = new LoadBtn().getTemplate();
+const search = new Search().getTemplate();
+const noTasks = new NoTasks().getTemplate();
+
+// Создание переменных с контейнерами
+
 const menuContainer = document.querySelector(`.main__control`);
 const mainContainer = document.querySelector(`.main`);
 const tasksContainer = document.createElement(`div`);
@@ -91,11 +84,14 @@ tasksContainer.appendChild(tasksContainerInner);
 
 // Отрисовка блоков
 
-renderComponent(menuContainer, templates.menu());
-renderComponent(mainContainer, templates.search());
-renderFilters(mainContainer);
+renderComponent(menuContainer, menu);
+renderComponent(mainContainer, search);
+filtersArray.forEach((filter) => renderFilter(filter));
+if (!filtersArray[0][0].count) {
+  renderComponent(mainContainer, noTasks);
+}
 mainContainer.appendChild(tasksContainer);
-renderComponent(tasksContainer, templates.loadBtn());
+renderComponent(tasksContainer, loadBtn);
 const tasksBoard = document.querySelector(`.board__tasks`);
 tasksMock.forEach((taskMock) => renderTask(taskMock));
 
@@ -104,5 +100,7 @@ tasksMock.forEach((taskMock) => renderTask(taskMock));
 
 // const loadBtn = document.querySelector(`.load-more`);
 // loadBtn.addEventListener(`click`, loadMoreTasks);
+
+export {tasksMock};
 
 

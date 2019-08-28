@@ -1,6 +1,6 @@
 import {createElement} from '../utils.js';
 
-class LoadBtn {
+class NoTasks {
   constructor() {
     this._element = null;
   }
@@ -13,8 +13,11 @@ class LoadBtn {
   }
 
   getTemplate() {
-    return `<button class="load-more" type="button">load more</button>`;
+    return `<p class="board__no-tasks">
+        Congratulations, all tasks were completed! To create a new click on
+        «add new task» button.
+    </p>`;
   }
 }
 
-export {LoadBtn};
+export {NoTasks};
