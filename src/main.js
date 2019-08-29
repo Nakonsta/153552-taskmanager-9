@@ -13,14 +13,7 @@ const renderFilter = (filtersArrayParam) => {
 };
 
 let startTaskIndex = 0;
-
-const loadMoreTasks = () => {
-  for (let i = 0; i < 8; i++) {
-    taskInProcessInitial.push(taskInProcess[i]);
-  }
-  console.log(taskInProcessInitial);
-  startTaskIndex += 8;
-};
+let newTasksArr = [];
 
 const TASK_COUNT = 50;
 
@@ -59,6 +52,20 @@ if (taskInProcess.length > 8) {
 // Подрузка новых карточек
 
 const loadBtn = document.querySelector(`.load-more`);
+const boardTask = document.querySelector(`.board__tasks`);
+
+
+const loadMoreTasks = () => {
+  for (let i = 8; i < 16; i++) {
+    console.log(taskInProcess[i]);
+    //render(boardTask, taskInProcess[i].getElement(), Positions.BEFOREEND);
+    //newTasksArr.push(taskInProcess[i]);
+  }
+  
+  
+  startTaskIndex += 8;
+};
+
 loadBtn.addEventListener(`click`, loadMoreTasks);
 
 export {tasksMock};
