@@ -63,9 +63,15 @@ const renderTask = (tasksMocks) => {
 //   }
 // };
 
-const TASK_COUNT = 8;
+const TASK_COUNT = 3;
 
 const tasksMock = new Array(TASK_COUNT).fill(``).map(getTask);
+const taskInProcess = [];
+for (let i = 0; i < tasksMock.length; i++) {
+  if (!tasksMock[i].isArchive) {
+    taskInProcess.push(tasksMock[i]);
+  }
+}
 const filtersArray = new Array(1).fill(``).map(getFilters);
 const menu = new Menu().getTemplate();
 const loadBtn = new LoadBtn().getTemplate();
@@ -93,7 +99,7 @@ if (!filtersArray[0][0].count) {
 mainContainer.appendChild(tasksContainer);
 renderComponent(tasksContainer, loadBtn);
 const tasksBoard = document.querySelector(`.board__tasks`);
-tasksMock.forEach((taskMock) => renderTask(taskMock));
+taskInProcess.forEach((taskMock) => renderTask(taskMock));
 
 
 // Подрузка новых карточек
