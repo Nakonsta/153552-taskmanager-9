@@ -1,3 +1,5 @@
+import {tasksMock} from './main.js';
+
 const chooseTags = () => {
   let allHashtags = [`homework`, `theory`, `practice`, `intensive`, `keks`, `lecture`, `chat`];
   let resultHashtags = new Set();
@@ -21,7 +23,7 @@ let filterArchive = (task) => task.isArchive === true;
 
 let countMatch = (filter, tasks) => {
   if (filter === `All`) {
-    return tasks.length;
+    return tasks.length - tasks.filter(filterArchive).length;
   }
   if (filter === `Overdue`) {
     return tasks.filter(filterOverdue).length;
@@ -76,31 +78,31 @@ const tasks = new Array(7).fill(``).map(getTask);
 const getFilters = () => ([
   {
     title: `All`,
-    count: countMatch(`All`, tasks),
+    count: countMatch(`All`, tasksMock),
   },
   {
     title: `Overdue`,
-    count: countMatch(`Overdue`, tasks),
+    count: countMatch(`Overdue`, tasksMock),
   },
   {
     title: `Today`,
-    count: countMatch(`Today`, tasks),
+    count: countMatch(`Today`, tasksMock),
   },
   {
     title: `Favorites`,
-    count: countMatch(`Favorites`, tasks),
+    count: countMatch(`Favorites`, tasksMock),
   },
   {
     title: `Repeating`,
-    count: countMatch(`Repeating`, tasks),
+    count: countMatch(`Repeating`, tasksMock),
   },
   {
     title: `Tags`,
-    count: countMatch(`Tags`, tasks),
+    count: countMatch(`Tags`, tasksMock),
   },
   {
     title: `Archive`,
-    count: countMatch(`Archive`, tasks),
+    count: countMatch(`Archive`, tasksMock),
   }
 ]);
 

@@ -1,5 +1,19 @@
-const getMenuTemplate = () => {
-  return `<section class="control__btn-wrap">
+import {createElement} from '../utils.js';
+
+class Menu {
+  constructor() {
+    this._element = null;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  getTemplate() {
+    return `<section class="control__btn-wrap">
         <input
         type="radio"
         name="control"
@@ -27,5 +41,7 @@ const getMenuTemplate = () => {
         >STATISTICS</label
         >
     </section>`;
-};
-export {getMenuTemplate};
+  }
+}
+
+export {Menu};
