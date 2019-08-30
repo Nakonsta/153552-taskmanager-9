@@ -12,10 +12,8 @@ const renderFilter = (filtersArrayParam) => {
   render(mainContainer, filter.getElement(), Positions.BEFOREEND);
 };
 
-let startTaskIndex = 0;
-let newTasksArr = [];
-
 const TASK_COUNT = 50;
+const TASKS_STEP = 8;
 
 const tasksMock = new Array(TASK_COUNT).fill(``).map(getTask);
 const taskInProcess = [];
@@ -25,8 +23,8 @@ for (let i = 0; i < tasksMock.length; i++) {
     taskInProcess.push(tasksMock[i]);
   }
 }
-if (taskInProcess.length > 8) {
-  for (let i = 0; i < 8; i++) {
+if (taskInProcess.length > TASKS_STEP) {
+  for (let i = 0; i < TASKS_STEP; i++) {
     taskInProcessInitial.push(taskInProcess[i]);
   }
 }
@@ -52,17 +50,18 @@ if (taskInProcess.length > 8) {
 // Подрузка новых карточек
 
 const loadBtn = document.querySelector(`.load-more`);
-const boardTask = document.querySelector(`.board__tasks`);
-
+let startTaskIndex = TASKS_STEP;
 
 const loadMoreTasks = () => {
-  for (let i = 8; i < 16; i++) {
-    console.log(taskInProcess[i]);
-    //render(boardTask, taskInProcess[i].getElement(), Positions.BEFOREEND);
-    //newTasksArr.push(taskInProcess[i]);
+
+  for (let i = startTaskIndex; i < startTaskIndex + 8; i++) {
+    if (taskInProcess[i]) {
+      boardController._renderTask(taskInProcess[i]);
+    } else {
+      loadBtn.remove();
+    }
   }
-  
-  
+
   startTaskIndex += 8;
 };
 
