@@ -3,6 +3,7 @@ import {TaskList} from '../components/taskList.js';
 import {Task} from '../components/taskCard.js';
 import {TaskEdit} from '../components/taskEdit.js';
 import {Sort} from '../components/sort.js';
+import {LoadBtn} from '../components/loadBtn.js';
 import {render, unrender, Positions} from '../utils.js';
 
 class BoardController {
@@ -12,6 +13,7 @@ class BoardController {
     this._board = new Board();
     this._sort = new Sort();
     this._taskList = new TaskList();
+    this._loadBtn = new LoadBtn();
   }
 
   init() {
@@ -24,13 +26,17 @@ class BoardController {
     this._sort.getElement().addEventListener(`click`, (evt) => {
       this._onSortClick(evt);
     });
+
   }
 
-  _renderBoard(tasks) {
+  _renderBoard() {
     unrender(this._taskList.getElement());
     this._taskList.removeElement();
-    render(this._board.getElement(), this._taskList.getElement(), Positions.AFTERBEGIN);
+    unrender(this._loadBtn.getElement());
+    this._loadBtn.removeElement();
+    render(this._board.getElement(), this._taskList.getElement(), Positions.BEFOREEND);
     this._tasks.forEach((taskMock) => this._renderTask(taskMock));
+    render(this._board.getElement(), this._loadBtn.getElement(), Positions.BEFOREEND);
   }
 
   _renderTask(task) {
@@ -77,10 +83,12 @@ class BoardController {
           'fr': false,
           'sa': false,
           'su': false,
-        })
+        }),
+        isFavorite: formData.get(`color`),
+        isArchive: formData.get(`color`),
       };
 
-      this._tasks[this._tasks.findIndex((it) => it === task)] = entry;        
+      this._tasks[this._tasks.findIndex((it) => it === task)] = entry;
       this._renderBoard(this._tasks);
       document.removeEventListener(`keydown`, onEscKeyDown);
     });

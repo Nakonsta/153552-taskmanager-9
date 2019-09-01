@@ -1,7 +1,6 @@
 import {Menu} from '../src/components/menu.js';
 import {Search} from '../src/components/search.js';
 import {Filter} from '../src/components/filters.js';
-import {LoadBtn} from '../src/components/loadBtn.js';
 import {NoTasks} from '../src/components/noTasks.js';
 import {getTask, getFilters} from './data.js';
 import {render, Positions} from './utils.js';
@@ -43,29 +42,29 @@ if (!filtersArray[0][0].count) {
 const boardController = new BoardController(mainContainer, taskInProcessInitial);
 boardController.init();
 const boardContainer = document.querySelector(`.board`);
-if (taskInProcess.length > 8) {
-  render(boardContainer, new LoadBtn().getElement(), Positions.BEFOREEND);
-}
+// if (taskInProcess.length > 8) {
+//   render(boardContainer, new LoadBtn().getElement(), Positions.BEFOREEND);
+// }
 
 // Подрузка новых карточек
 
-const loadBtn = document.querySelector(`.load-more`);
-let startTaskIndex = TASKS_STEP;
+// const loadBtn = document.querySelector(`.load-more`);
+// let startTaskIndex = TASKS_STEP;
 
-const loadMoreTasks = () => {
+// const loadMoreTasks = () => {
 
-  for (let i = startTaskIndex; i < startTaskIndex + 8; i++) {
-    if (taskInProcess[i]) {
-      boardController._renderTask(taskInProcess[i]);
-    } else {
-      loadBtn.remove();
-    }
-  }
+//   for (let i = startTaskIndex; i < startTaskIndex + 8; i++) {
+//     if (taskInProcess[i]) {
+//       boardController._renderTask(taskInProcess[i]);
+//     } else {
+//       loadBtn.remove();
+//     }
+//   }
 
-  startTaskIndex += 8;
-};
+//   startTaskIndex += 8;
+// };
 
-loadBtn.addEventListener(`click`, loadMoreTasks);
+// loadBtn.addEventListener(`click`, loadMoreTasks);
 
 export {tasksMock};
 
