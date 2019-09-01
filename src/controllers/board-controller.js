@@ -61,8 +61,6 @@ class BoardController {
   _onSortClick(evt) {
     evt.preventDefault();
 
-    
-
     if (evt.target.tagName !== `A`) {
       return;
     }
