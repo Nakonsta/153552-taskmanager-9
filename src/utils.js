@@ -30,5 +30,5 @@ const unrender = (element) => {
   }
 };
 
-export {Positions, createElement, render};
+export {Positions, createElement, render, unrender};
 

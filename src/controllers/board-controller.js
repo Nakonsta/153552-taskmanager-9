@@ -3,7 +3,7 @@ import {TaskList} from '../components/taskList.js';
 import {Task} from '../components/taskCard.js';
 import {TaskEdit} from '../components/taskEdit.js';
 import {Sort} from '../components/sort.js';
-import {render, Positions} from '../utils.js';
+import {render, unrender, Positions} from '../utils.js';
 
 class BoardController {
   constructor(container, tasks) {
@@ -24,6 +24,13 @@ class BoardController {
     this._sort.getElement().addEventListener(`click`, (evt) => {
       this._onSortClick(evt);
     });
+  }
+
+  _renderBoard(tasks) {
+    unrender(this._taskList.getElement());
+    this._taskList.removeElement();
+    render(this._board.getElement(), this._taskList.getElement(), Positions.AFTERBEGIN);
+    this._tasks.forEach((taskMock) => this._renderTask(taskMock));
   }
 
   _renderTask(task) {
@@ -50,8 +57,31 @@ class BoardController {
       document.addEventListener(`keydown`, onEscKeyDown);
     });
 
-    taskEditComponent.getElement().querySelector(`.card__save`).addEventListener(`click`, () => {
-      this._taskList.getElement().replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+    taskEditComponent.getElement().querySelector(`.card__save`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+
+      const formData = new FormData(taskEditComponent.getElement().querySelector(`.card__form`));
+      const entry = {
+        description: formData.get(`text`),
+        color: formData.get(`color`),
+        tags: new Set(formData.getAll(`hashtag`)),
+        dueDate: new Date(formData.get(`date`)),
+        repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
+          acc[it] = true;
+          return acc;
+        }, {
+          'mo': false,
+          'tu': false,
+          'we': false,
+          'th': false,
+          'fr': false,
+          'sa': false,
+          'su': false,
+        })
+      };
+
+      this._tasks[this._tasks.findIndex((it) => it === task)] = entry;        
+      this._renderBoard(this._tasks);
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
 
