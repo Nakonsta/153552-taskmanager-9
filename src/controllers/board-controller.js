@@ -5,6 +5,7 @@ import {TaskEdit} from '../components/taskEdit.js';
 import {Sort} from '../components/sort.js';
 import {LoadBtn} from '../components/loadBtn.js';
 import {render, unrender, Positions} from '../utils.js';
+import {TaskController} from './task-controller.js';
 
 class BoardController {
   constructor(container, tasks) {
@@ -42,8 +43,13 @@ class BoardController {
   }
 
   _renderTask(task) {
-    const taskComponent = new Task(task);
-    const taskEditComponent = new TaskEdit(task);
+    const taskController = new TaskController(this._taskList, task);
+    Object.keys(taskController);
+  }
+
+  _onDataChange(newData, oldData) {
+    this._tasks[this._tasks.findIndex((it) => it === oldData)] = newData;
+    this._renderBoard(this._tasks);
   }
 
   _onSortClick(evt) {

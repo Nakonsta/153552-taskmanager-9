@@ -20,17 +20,24 @@ class TaskController {
       }
     };
 
-    this._taskView.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
-      this._container.getElement().replaceChild(this._taskEdit.getElement(), this._taskView.getElement());
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-
     this._taskEdit.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
 
     this._taskEdit.getElement().querySelector(`textarea`).addEventListener(`blur`, () => {
       document.addEventListener(`keydown`, onEscKeyDown);
+    });
+
+    this._taskView.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      this._onChangeView();
+      this._container.getElement().replaceChild(this._taskEdit.getElement(), this._taskView.getElement());
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
+
+    this._taskEdit.getElement().querySelector(`.card__form`).addEventListener(`submit`, (evt) => {
+      evt.preventDefault();
+      this._container.getElement().replaceChild(this._taskView.getElement(), this._taskEdit.getElement());
     });
 
     this._taskEdit.getElement().querySelector(`.card__save`).addEventListener(`click`, (evt) => {
@@ -54,12 +61,10 @@ class TaskController {
           'sa': false,
           'su': false,
         }),
-        isFavorite: formData.get(`color`),
-        isArchive: formData.get(`color`),
+        isFavorite: formData.get(`card__btn--favorites`),
+        isArchive: formData.get(`card__btn--archive`),
       };
 
-      this._tasks[this._tasks.findIndex((it) => it === task)] = entry;
-      this._renderBoard(this._tasks);
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
 
