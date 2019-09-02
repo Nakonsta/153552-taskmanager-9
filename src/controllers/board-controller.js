@@ -27,6 +27,8 @@ class BoardController {
       this._onSortClick(evt);
     });
 
+    render(this._board.getElement(), this._loadBtn.getElement(), Positions.BEFOREEND);
+
   }
 
   _renderBoard() {
@@ -42,58 +44,6 @@ class BoardController {
   _renderTask(task) {
     const taskComponent = new Task(task);
     const taskEditComponent = new TaskEdit(task);
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        this._taskList.getElement().replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-
-    taskComponent.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
-      this._taskList.getElement().replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-
-    taskEditComponent.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
-
-    taskEditComponent.getElement().querySelector(`textarea`).addEventListener(`blur`, () => {
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-
-    taskEditComponent.getElement().querySelector(`.card__save`).addEventListener(`click`, (evt) => {
-      evt.preventDefault();
-
-      const formData = new FormData(taskEditComponent.getElement().querySelector(`.card__form`));
-      const entry = {
-        description: formData.get(`text`),
-        color: formData.get(`color`),
-        tags: new Set(formData.getAll(`hashtag`)),
-        dueDate: new Date(formData.get(`date`)),
-        repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
-          acc[it] = true;
-          return acc;
-        }, {
-          'mo': false,
-          'tu': false,
-          'we': false,
-          'th': false,
-          'fr': false,
-          'sa': false,
-          'su': false,
-        }),
-        isFavorite: formData.get(`color`),
-        isArchive: formData.get(`color`),
-      };
-
-      this._tasks[this._tasks.findIndex((it) => it === task)] = entry;
-      this._renderBoard(this._tasks);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
-
-    render(this._taskList.getElement(), taskComponent.getElement(), Positions.BEFOREEND);
   }
 
   _onSortClick(evt) {
