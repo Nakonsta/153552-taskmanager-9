@@ -3,9 +3,11 @@ import {TaskEdit} from "../components/taskEdit";
 import {render, Positions} from '../utils.js';
 
 class TaskController {
-  constructor(container, data) {
+  constructor(container, data, onDataChange, onChangeView) {
     this._container = container;
     this._data = data;
+    this._onChangeView = onChangeView;
+    this._onDataChange = onDataChange;
     this._taskView = new Task(data);
     this._taskEdit = new TaskEdit(data);
 
@@ -61,14 +63,24 @@ class TaskController {
           'sa': false,
           'su': false,
         }),
-        isFavorite: formData.get(`card__btn--favorites`),
-        isArchive: formData.get(`card__btn--archive`),
+        isFavorite: formData.has(`card__btn--favorites`),
+        isArchive: formData.has(`card__btn--archive`),
       };
+
+      console.log(entry);
+
+      this._onDataChange(entry, this._data);
 
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
 
     render(this._container.getElement(), this._taskView.getElement(), Positions.BEFOREEND);
+  }
+
+  setDefaultView() {
+    if (this._container.getElement().contains(this._taskEdit.getElement())) {
+      this._container.getElement().replaceChild(this._taskView.getElement(), this._taskEdit.getElement());
+    }
   }
 }
 

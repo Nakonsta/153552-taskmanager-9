@@ -128,6 +128,7 @@ class TaskEdit extends AbstractComponent {
                     class="card__color-input card__color-input--black visually-hidden"
                     name="color"
                     value="black"
+                    ${(this._color === `black`) ? `checked` : ``}
                 />
                 <label
                     for="color-black-4"
@@ -140,7 +141,7 @@ class TaskEdit extends AbstractComponent {
                     class="card__color-input card__color-input--yellow visually-hidden"
                     name="color"
                     value="yellow"
-                    checked
+                    ${(this._color === `yellow`) ? `checked` : ``}
                 />
                 <label
                     for="color-yellow-4"
@@ -153,6 +154,7 @@ class TaskEdit extends AbstractComponent {
                     class="card__color-input card__color-input--blue visually-hidden"
                     name="color"
                     value="blue"
+                    ${(this._color === `blue`) ? `checked` : ``}
                 />
                 <label
                     for="color-blue-4"
@@ -165,6 +167,7 @@ class TaskEdit extends AbstractComponent {
                     class="card__color-input card__color-input--green visually-hidden"
                     name="color"
                     value="green"
+                    ${(this._color === `green`) ? `checked` : ``}
                 />
                 <label
                     for="color-green-4"
@@ -177,6 +180,7 @@ class TaskEdit extends AbstractComponent {
                     class="card__color-input card__color-input--pink visually-hidden"
                     name="color"
                     value="pink"
+                    ${(this._color === `pink`) ? `checked` : ``}
                 />
                 <label
                     for="color-pink-4"
@@ -194,6 +198,30 @@ class TaskEdit extends AbstractComponent {
         </div>
         </form>
     </article>`;
+  }
+
+  _subscribeOnEvents() {
+    this.getElement().querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
+      if (evt.key === `Enter`) {
+        evt.preventDefault();
+        this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeend`, `
+            <span class="card__hashtag-inner">
+            <input
+                type="hidden"
+                name="hashtag"
+                value="${evt.target.value}"
+                class="card__hashtag-hidden-input"
+            />
+            <p class="card__hashtag-name">
+                #${evt.target.value}
+            </p>
+            <button type="button" class="card__hashtag-delete">
+                delete
+            </button>
+            </span>`);
+        evt.target.value = ``;
+      }
+    });
   }
 }
 

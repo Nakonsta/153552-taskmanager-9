@@ -15,6 +15,10 @@ class BoardController {
     this._sort = new Sort();
     this._taskList = new TaskList();
     this._loadBtn = new LoadBtn();
+
+    this._subscriptions = [];
+    this._onChangeView = this._onChangeView.bind(this);
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
   init() {
@@ -43,8 +47,12 @@ class BoardController {
   }
 
   _renderTask(task) {
-    const taskController = new TaskController(this._taskList, task);
-    Object.keys(taskController);
+    const taskController = new TaskController(this._taskList, task, this._onDataChange, this._onChangeView);
+    this._subscriptions.push(taskController.setDefaultView.bind(taskController));
+  }
+
+  _onChangeView() {
+    this._subscriptions.forEach((it) => it());
   }
 
   _onDataChange(newData, oldData) {
