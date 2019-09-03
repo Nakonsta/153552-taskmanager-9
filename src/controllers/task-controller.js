@@ -67,8 +67,6 @@ class TaskController {
         isArchive: formData.has(`card__btn--archive`),
       };
 
-      console.log(entry);
-
       this._onDataChange(entry, this._data);
 
       document.removeEventListener(`keydown`, onEscKeyDown);

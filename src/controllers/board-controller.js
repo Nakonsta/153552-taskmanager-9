@@ -1,7 +1,5 @@
 import {Board} from '../components/board.js';
 import {TaskList} from '../components/taskList.js';
-import {Task} from '../components/taskCard.js';
-import {TaskEdit} from '../components/taskEdit.js';
 import {Sort} from '../components/sort.js';
 import {LoadBtn} from '../components/loadBtn.js';
 import {render, unrender, Positions} from '../utils.js';
