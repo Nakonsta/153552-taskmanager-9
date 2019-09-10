@@ -19,8 +19,6 @@ class TaskController {
 
   create() {
 
-    console.log(`create`);
-
     flatpickr(this._taskEdit.getElement().querySelector(`.card__date`), {
       altInput: true,
       allowInput: true,
